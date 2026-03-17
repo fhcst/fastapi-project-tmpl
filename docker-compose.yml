@@ -10,29 +10,28 @@ services:
     environment:
       - FASTAPI_APP_ENVIRONMENT=${FASTAPI_APP_ENVIRONMENT}
       - SESSION_SECRET=${SESSION_SECRET}
-      - DB_URL=mysql+aiomysql://${MARIADB_USER:-user}:${MARIADB_PASSWORD:-password}@${DB_HOST:-mariadb}:${DB_PORT:-3306}/${MARIADB_DATABASE:-db}
+      - DB_URL=postgresql+asyncpg://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@${DB_HOST:-postgres}:${DB_PORT:-5432}/${POSTGRES_DB:-db}
     depends_on:
-      mariadb:
+      postgres:
         condition: service_healthy
 
-  mariadb:
-    image: mariadb:11.4
+  postgres:
+    image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-rootpassword}
-      MARIADB_DATABASE: ${MARIADB_DATABASE:-db}
-      MARIADB_USER: ${MARIADB_USER:-user}
-      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-db}
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "3306:3306"
+      - "5432:5432"
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-db}"]
       interval: 10s
       timeout: 5s
       retries: 3
-  
+
   dbgate:
     image: dbgate/dbgate
     restart: unless-stopped
@@ -43,14 +42,14 @@ services:
     environment:
       - CONNECTIONS=con1
 
-      - LABEL_con1=MariaDB
-      - SERVER_con1=${DB_HOST:-mariadb}
-      - USER_con1=${MARIADB_USER:-user}
-      - PASSWORD_con1=${MARIADB_PASSWORD:-password}
-      - PORT_con1=${DB_PORT:-3306}
-      - ENGINE_con1=mysql@dbgate-plugin-mysql
+      - LABEL_con1=PostgreSQL
+      - SERVER_con1=${DB_HOST:-postgres}
+      - USER_con1=${POSTGRES_USER:-user}
+      - PASSWORD_con1=${POSTGRES_PASSWORD:-password}
+      - PORT_con1=${DB_PORT:-5432}
+      - ENGINE_con1=postgres@dbgate-plugin-postgres
     depends_on:
-      mariadb:
+      postgres:
         condition: service_healthy
 
   redis:
@@ -89,7 +88,7 @@ services:
       - lakefs_data:/home/lakefs
 
 volumes:
-  mariadb_data:
+  postgres_data:
   dbgate_data:
   redis_data:
   minio_data:
