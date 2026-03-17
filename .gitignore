@@ -114,7 +114,12 @@ build/
 *.pid
 *.pid.lock
 .spectra/
-openspec/.vector-search.db*
+openspec/
+.agent/
+.claude/
+.gemini/
+CLAUDE.md
+
 
 # --- AI Agent local settings ---
 .claude/settings.local.json
