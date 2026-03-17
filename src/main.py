@@ -2,15 +2,20 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from shared import init_db
 from shared.sessions import SessionMiddleware
+from shared.redis import init_redis, close_redis
+from shared.storage import init_storage
+from shared.lakefs import init_lakefs
 import os
 import secrets
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
-    ...
+    await init_redis()
+    await init_storage()
+    await init_lakefs()
     yield
-    ...
+    await close_redis()
 
 app = FastAPI(lifespan=lifespan)
 

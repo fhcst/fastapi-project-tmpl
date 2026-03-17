@@ -53,6 +53,44 @@ services:
       mariadb:
         condition: service_healthy
 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    profiles: ["redis"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    profiles: ["minio"]
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    volumes:
+      - minio_data:/data
+
+  lakefs:
+    image: treeverse/lakefs
+    restart: unless-stopped
+    profiles: ["lakefs"]
+    ports:
+      - "8001:8000"
+    environment:
+      - LAKEFS_AUTH_ENCRYPT_SECRET_KEY=${LAKEFS_ENCRYPT_SECRET:-some-random-secret}
+      - LAKEFS_DATABASE_TYPE=local
+    volumes:
+      - lakefs_data:/home/lakefs
+
 volumes:
   mariadb_data:
   dbgate_data:
+  redis_data:
+  minio_data:
+  lakefs_data:

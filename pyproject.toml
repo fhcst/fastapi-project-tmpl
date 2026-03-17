@@ -18,6 +18,10 @@ dependencies = [
     "pytest-asyncio>=1.3.0",
     "pytest-sugar>=1.1.1",
     "sqlmodel",
+    # Optional add-ons (included for template completeness; remove unused ones)
+    "redis[asyncio]>=5.0.0",
+    "miniopy-async>=1.21",
+    "lakefs-sdk>=1.0.0",
 ]
 
 [tool.uv.sources]
