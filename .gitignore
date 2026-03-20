@@ -115,7 +115,7 @@ build/
 *.pid.lock
 .spectra/
 openspec/*
-!openspec/specs/*
+!openspec/specs/
 
 # --- AI Agent local settings ---
 .claude/settings.local.json
