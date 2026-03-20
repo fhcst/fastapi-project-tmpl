@@ -1,10 +1,9 @@
 # 貢獻指南 (Contributing Guide)
 
 > [!IMPORTANT]
-> **給使用本範本的同學：**
-> 請將本 `CONTRIBUTING.md` 檔案內容修改為適合你或是你們小組專案的說明。
-> 凡是看到 `[ ]` 包起來的文字，都需要替換成實際的內容。
-> 例如：`[你的 GitHub 帳號]` 請替換為你實際的帳號名稱。
+> **TODO：這份文件是給你改的！**
+> 在開始使用前，請搜尋所有標有 `TODO:` 的區塊，並依照說明替換成你的專案實際內容。
+> 沒有 `TODO:` 標示的段落（例如 Git 流程、Commit 規範）可以直接沿用，不需要修改。
 
 感謝你有興趣參與本專案的開發！本專案旨在模擬真實的 **OSS (Open Source Software)** 開發流程，讓同學熟悉團隊協作的模式。
 
@@ -22,24 +21,29 @@
 
 ### 1. Fork 專案
 
-點選 GitHub頁面右上角的 **Fork** 按鈕，將本專案複製到你自己的 GitHub 帳號下。
+點選 GitHub 頁面右上角的 **Fork** 按鈕，將本專案複製到你自己的 GitHub 帳號下。
 
 ### 2. Clone 到本地端
 
 將你 Fork 下來的專案 Clone 到你的電腦中。
 
+> [!IMPORTANT]
+> **TODO：** 將以下指令中的 `YOUR_USERNAME` 替換為你的 GitHub 帳號，`YOUR_PROJECT` 替換為你的 Repository 名稱。
+
 ```bash
-# 請將 [你的 GitHub 帳號] 替換為你的 GitHub 帳號
-git clone https://github.com/[你的 GitHub 帳號]/[專案].git
-cd [專案]
+git clone https://github.com/YOUR_USERNAME/YOUR_PROJECT.git
+cd YOUR_PROJECT
 ```
 
 ### 3. 設定 Upstream Remote
 
 為了保持與原專案同步，請設定 `upstream`。
 
+> [!IMPORTANT]
+> **TODO：** 將以下指令中的 URL 替換為**原始 Repository**（你 Fork 來源）的網址。
+
 ```bash
-git remote add upstream https://github.com/[你的 GitHub 帳號]/[專案].git
+git remote add upstream https://github.com/ORIGINAL_OWNER/YOUR_PROJECT.git
 ```
 
 ### 4. 建立功能分支 (Feature Branch)
@@ -67,7 +71,7 @@ uv run pytest
 
 ### 6. 提交變更 (Commit)
 
-請遵守 **Commit Message Convention** (詳見下方說明)。
+請遵守 **Commit Message Convention**（詳見下方說明）。
 
 ```bash
 git add .
@@ -84,12 +88,12 @@ git push origin feature/my-new-feature
 
 ### 8. 發起 Pull Request (PR)
 
-1.  回到 GitHub 上你的 Repo 頁面。
-2.  你會看到一個 "Compare & pull request" 的提示，點擊它。
-3.  **Base repository** 選擇 `[你的 GitHub 帳號]/[專案]` 的 `main` 分支。
-4.  **Head repository** 選擇你的 Repo 與剛才 Push 的分支。
-5.  填寫 PR 的標題與描述，清楚說明你做了什麼改變。
-6.  等待專案維護者 (Maintainers) 進行 Code Review。
+1. 回到 GitHub 上你的 Repo 頁面。
+2. 你會看到一個 "Compare & pull request" 的提示，點擊它。
+3. **Base repository** 選擇原始專案的 `main` 分支。
+4. **Head repository** 選擇你的 Repo 與剛才 Push 的分支。
+5. 填寫 PR 的標題與描述，清楚說明你做了什麼改變。
+6. 等待專案維護者 (Maintainers) 進行 Code Review。
 
 ### 9. 同步原專案 (Sync Upstream)
 
@@ -134,16 +138,16 @@ git rebase main
 ## 🎨 程式碼風格 (Code Style)
 
 - 請使用 **PEP 8** 風格撰寫 Python 程式碼。
-- 變數命名請使用具備描述性的英文單字 (例如 `user_list` 而非 `ul`)。
-- 建議使用 `uv run ruff check` 來檢查程式碼品質 (若有設定)。
+- 變數命名請使用具備描述性的英文單字（例如 `user_list` 而非 `ul`）。
+- 建議使用 `uv run ruff check` 來檢查程式碼品質（若有設定）。
 - 確保所有新的 API 都有對應的測試案例。
 
 ## ✅ Pull Request 檢查清單
 
 在送出 PR 之前，請確認：
 - [ ] 程式碼可以正常執行且通過所有測試。
-- [ ] 沒有包含不必要的檔案 (如 `.DS_Store`, `__pycache__` 等)。
+- [ ] 沒有包含不必要的檔案（如 `.DS_Store`、`__pycache__` 等）。
 - [ ] Commit Message 符合規範。
-- [ ] 相關文件 (如 API 文件) 已更新。
+- [ ] 相關文件（如 API 文件）已更新。
 
 感謝你的貢獻！讓我們一起讓這個專案變得更好！
